@@ -11,6 +11,7 @@ function Footer() {
 
 const FooterStyled = styled.footer`
   text-align: center;
+  z-index: 10;
 `
 
 const FooterText = styled.p`
