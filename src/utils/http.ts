@@ -4,6 +4,7 @@ const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_SERVER_URL,
     timeout: 10000,
     headers: {
+        "ngrok-skip-browser-warning": true,
         "Content-Type": "application/json",
     }
 })
