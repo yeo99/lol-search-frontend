@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     const url = `https://accounts.google.com/o/oauth2/auth?` +
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
     if (code) {
       const fetchUserData = async (code: string) => {
         try {
-          const response = await fetch('http://localhost:9999/users/login', {
+          const response = await fetch(`${import.meta.env.VITE_BACKEND_SERVER_URL}/users/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -101,3 +101,4 @@ const LoginButton = styled.button`
 `;
 
 export default Login;
+
