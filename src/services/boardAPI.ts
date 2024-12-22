@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IPost, IPostBody, IPostList, IResponse } from "../types/board.type";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_BACKEND_LOCAL_SERVER_URL,
+  baseUrl: import.meta.env.VITE_BACKEND_SERVER_URL,
   headers: {
     Authorization: import.meta.env.VITE_BACKEND_TOKEN,
   },
