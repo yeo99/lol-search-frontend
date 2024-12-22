@@ -1,7 +1,8 @@
 export interface MenuProps {
-    isOpen: boolean;
+  isOpen: boolean;
+  setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface MenuButtonProps {
-    isOpen: boolean;
+  isOpen: boolean;
 }

@@ -1,10 +1,13 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Input, Flex, Button, notification } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import styled from "styled-components";
-import { useEnrollPostMutation } from "../../services/boardAPI";
+import {
+  useGetPostQuery,
+  useUpdatePostMutation,
+} from "../../services/boardAPI";
 
 const StyledQuill = styled.div`
   .ql-toolbar {
@@ -23,9 +26,17 @@ const StyledQuill = styled.div`
 `;
 
 const WriteForm = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [enrollPost, { isLoading }] = useEnrollPostMutation();
+  const { postId } = useParams();
+  let fixedId: string = "";
+  if (typeof postId === "string") {
+    fixedId = postId;
+  }
+
+  const { data: postData } = useGetPostQuery(fixedId);
+
+  const [title, setTitle] = useState(postData?.title);
+  const [content, setContent] = useState(postData?.content);
+  const [updatePost, { isLoading: isLoadingUpdate }] = useUpdatePostMutation();
   const navigate = useNavigate();
 
   const modules = useMemo(
@@ -42,18 +53,26 @@ const WriteForm = () => {
 
   const handleSubmit = async () => {
     try {
-      await enrollPost({ title, content }).unwrap();
-      notification.success({
-        message: "알림",
-        description: "게시물이 등록되었습니다",
-        duration: 0,
-        onClose: () => navigate("/board/list"),
-      });
+      if (typeof title === "string" && typeof content === "string") {
+        await updatePost({
+          postId: fixedId,
+          body: { title, content },
+        }).unwrap();
+        notification.success({
+          message: "알림",
+          description: "게시물이 수정되었습니다",
+          duration: 0,
+          onClose: () => {
+            navigate(`/board/view/${fixedId}`);
+            location.reload();
+          },
+        });
+      }
     } catch (error) {
       console.log(error);
       notification.error({
         message: "알림",
-        description: "게시물 등록에 실패했습니다",
+        description: "게시물 수정에 실패했습니다",
         duration: 0,
       });
     }
@@ -78,7 +97,7 @@ const WriteForm = () => {
       <Button
         type="primary"
         onClick={handleSubmit}
-        loading={isLoading}
+        loading={isLoadingUpdate}
         disabled={!title || !content}
       >
         작성 완료

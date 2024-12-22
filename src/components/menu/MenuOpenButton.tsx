@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { AiOutlineClose } from 'react-icons/ai';
-import styled from 'styled-components';
-import Menu from './Menu';
-import { MenuButtonProps } from '../../types/menu.type';
+import { useState, useEffect } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineClose } from "react-icons/ai";
+import styled from "styled-components";
+import Menu from "./Menu";
+import { MenuButtonProps } from "../../types/menu.type";
 
 const MenuOpenButton: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -14,22 +14,26 @@ const MenuOpenButton: React.FC = () => {
 
   useEffect(() => {
     if (menuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [menuOpen]);
 
   return (
     <div>
       <MenuButton onClick={toggleMenu} isOpen={menuOpen}>
-        {menuOpen ? <AiOutlineClose size={30} /> : <GiHamburgerMenu size={30} />}
+        {menuOpen ? (
+          <AiOutlineClose size={30} />
+        ) : (
+          <GiHamburgerMenu size={30} />
+        )}
       </MenuButton>
-      <Menu isOpen={menuOpen} />
+      <Menu isOpen={menuOpen} setMenuOpen={setMenuOpen} />
     </div>
   );
 };

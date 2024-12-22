@@ -66,7 +66,7 @@ const PostList = () => {
           <List.Item>
             <List.Item.Meta
               title={
-                <a href={`https://ant.design`}>
+                <a onClick={() => navigate(`/board/view/${item.postId}`)}>
                   {item.title}
                   <span style={{ color: "blue" }}> ({item.comments})</span>
                 </a>

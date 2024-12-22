@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IPost, IPostBody, IPostList, IResponse } from "../types/board.type";
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_BACKEND_SERVER_URL,
+export const baseQuery = fetchBaseQuery({
+  baseUrl: import.meta.env.VITE_BACKEND_LOCAL_SERVER_URL,
   headers: {
     Authorization: import.meta.env.VITE_BACKEND_TOKEN,
   },
@@ -27,8 +27,8 @@ export const boardAPI = createApi({
         return `/posts?${params.toString()}`;
       },
     }),
-    getPost: builder.query<IPost, { postId: number }>({
-      query: (postId) => `/posts/${postId}`,
+    getPost: builder.query<IPost, string>({
+      query: (postId) => `/posts/${postId}`, // 단일 값으로 postId 받음
     }),
     enrollPost: builder.mutation<IResponse, IPostBody>({
       query: (body) => ({
@@ -39,7 +39,7 @@ export const boardAPI = createApi({
     }),
     updatePost: builder.mutation<
       IResponse,
-      { postId: number; body: IPostBody }
+      { postId: string; body: IPostBody }
     >({
       query: ({ postId, body }) => ({
         url: `/posts/${postId}`,
@@ -47,7 +47,7 @@ export const boardAPI = createApi({
         body,
       }),
     }),
-    deletePost: builder.mutation<IResponse, { postId: number }>({
+    deletePost: builder.mutation<IResponse, string>({
       query: (postId) => ({
         url: `/posts/${postId}`,
         method: "DELETE",

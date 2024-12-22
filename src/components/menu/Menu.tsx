@@ -1,28 +1,36 @@
-import styled from 'styled-components';
-import { MenuProps } from '../../types/menu.type';
+import styled from "styled-components";
+import { MenuProps } from "../../types/menu.type";
+import { useNavigate } from "react-router-dom";
 
-const Menu: React.FC<MenuProps> = ({ isOpen }) => {
+const Menu: React.FC<MenuProps> = ({ isOpen, setMenuOpen }) => {
+  const navigate = useNavigate();
+  const changePage = (pageUrl: string) => {
+    navigate(pageUrl);
+    setMenuOpen(false);
+  };
   return (
     <MenuStyle isOpen={isOpen}>
       <Profile>
         <img src="https://via.placeholder.com/50" alt="프로필 사진" />
         <div>
-          <p><strong>술좋아함 #KR1</strong></p>
+          <p>
+            <strong>술좋아함 #KR1</strong>
+          </p>
           <p>온라인</p>
         </div>
       </Profile>
       <MenuButton>내 정보</MenuButton>
-      <MenuButton>게시판</MenuButton>
-      <MenuButton>채팅</MenuButton>
+      <MenuButton onClick={() => changePage("/board/list")}>게시판</MenuButton>
+      <MenuButton onClick={() => changePage("/")}>채팅</MenuButton>
     </MenuStyle>
   );
 };
 
 const MenuStyle = styled.div<{ isOpen: boolean }>`
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   position: fixed;
-  top: ${(props) => (props.isOpen ? '60px' : '-100%')};
+  top: ${(props) => (props.isOpen ? "60px" : "-100%")};
   left: 0;
   width: 100%;
   height: 100%;
@@ -68,7 +76,7 @@ const MenuButton = styled.button`
 
   &:hover {
     background-color: #f0f0f0;
-    color: #005A82;
+    color: #005a82;
   }
 `;
 

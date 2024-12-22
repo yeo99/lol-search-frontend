@@ -23,3 +23,21 @@ export interface IResponse {
   postId: number;
   message: string;
 }
+
+export interface IComment {
+  content: string;
+  commentId: number;
+  postId: number;
+  userId: number;
+  userName: string;
+  createdAt: string;
+}
+
+export interface ICommentResponse {
+  commentId: number;
+  message: string;
+}
+
+export interface ICommentBody {
+  content: string;
+}
