@@ -25,7 +25,6 @@ const Login: React.FC = () => {
           const response = await fetch(`${import.meta.env.VITE_BACKEND_SERVER_URL}/users/login`, {
             method: 'POST',
             headers: {
-              'ngrok-skip-browser-warning': "true",
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code }),
