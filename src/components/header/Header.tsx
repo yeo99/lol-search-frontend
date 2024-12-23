@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import MenuOpenButton from '../menu/MenuOpenButton';
+import { useNavigate } from 'react-router-dom';
 
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <HeaderStyle>
+    <HeaderStyle onClick={() => navigate('/')}>
       <h1>LOL Search</h1>
       <MenuOpenButton />
     </HeaderStyle>

@@ -3,75 +3,45 @@ import type { GetProps } from 'antd';
 import ChatBox from '../../components/chat/ChatBox';
 import { GoPlusCircle } from "react-icons/go";
 import { Link } from 'react-router-dom';
-// import ChatAdd from './ChatAdd';
+import { useEffect, useState } from 'react';
 
 type SearchProps = GetProps<typeof Input.Search>;
 
 const { Search } = Input;
 
-const myChatData = [
-  {
-    title: "제목 길이 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 길이 넘어가는지 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 길이 넘어가는지 테스트",
-    headcount: "1/2"
-  },
-];
-
-const chatData = [
-  {
-    title: "제목 길이 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 길이 넘어가는지 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 잘 되는지 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목제목제목제목제목제목제목제목제목제목",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 잘 되는지 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목제목제목제목제목제목제목제목제목제목",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 잘 되는지 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목제목제목제목제목제목제목제목제목제목",
-    headcount: "1/2"
-  },
-  {
-    title: "제목 잘 되는지 테스트",
-    headcount: "1/2"
-  },
-  {
-    title: "제목제목제목제목제목제목제목제목제목제목",
-    headcount: "1/2"
-  },
-];
+interface ChatData {
+  id: number;
+  title: string;
+  imIn: number;
+  nowMembers: number;
+}
 
 const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
-  console.log(info?.source, value)
+  console.log(info?.source, value);
 };
 
 const ChatList = () => {
+  //const [myChatData, setMyChatData] = useState<ChatData[]>([]);
+  const [chatData, setChatData] = useState<ChatData[]>([]);
+
+  useEffect(() => {
+    const fetchChatData = async () => {
+      try {
+        const response = await fetch(`http://localhost:9999/chats?page=1&pageSize=1000`);
+        const responseChats: ChatData[] = await response.json();
+        const chats = responseChats.reverse();
+
+        //const myChats = chats.filter((chat) => chat.imIn === 1);
+        //setMyChatData(myChats);
+        setChatData(chats);
+      } catch(error) {
+        console.error('Error: ', error);
+      }
+    }
+
+    fetchChatData();
+  }, []);
+
   return (
     <Flex vertical gap="large" style={{width: '100%'}}>
       <Search 
@@ -80,7 +50,7 @@ const ChatList = () => {
         onSearch={onSearch} 
         enterButton 
       />
-
+{/* 
       <div style={{height: '25%'}}>
         <p>내 채팅 목록</p>
         <List
@@ -90,11 +60,12 @@ const ChatList = () => {
           renderItem={(item) => (
             <ChatBox
               title={item.title}
-              headcount={item.headcount}
+              headcount={`${item.nowMembers+1}/2`}
+              roomId={item.id}
             />
           )}
         />
-      </div>
+      </div> */}
 
       <div>
         <Flex justify="end">
@@ -104,13 +75,14 @@ const ChatList = () => {
         </Flex>
 
         <List
-          pagination={{ position: "bottom", align: "center", pageSize: 7, style: { marginTop: '-15px' } }}
+          pagination={{ position: "bottom", align: "center", pageSize: 10, style: { marginTop: '-15px' }, showSizeChanger: false }}
           size="default"
           dataSource={chatData}
           renderItem={(item) => (
             <ChatBox
               title={item.title}
-              headcount={item.headcount}
+              headcount={`${item.nowMembers}/2`}
+              roomId={item.id}
             />
           )}
         />

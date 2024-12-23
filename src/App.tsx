@@ -29,7 +29,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ChatList />} />
             <Route path="/chat/add" element={<ChatAdd />} />
-            <Route path="/chat/room" element={<ChatRoom />} />
+            <Route path="/chat/:roomId" element={<ChatRoom />} />
             <Route path="/board/write" element={<WriteForm />} />
             <Route path="/board/list" element={<PostList />} />
             <Route path="/board/view/:postId" element={<ViewPost />} />
